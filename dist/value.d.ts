@@ -1,0 +1,2 @@
+export declare const createValue: <T = string | number | boolean>(name: string, parsedValue: string | null | undefined, transformer: (value: string) => T, validator?: ((value: T) => boolean) | undefined) => T;
+export declare const createOptionalValue: <T = string | number | boolean>(name: string, parsedValue: string | null | undefined, transformer: (value: string) => T, validator?: ((value: T) => boolean) | undefined) => T | undefined;

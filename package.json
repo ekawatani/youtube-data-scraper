@@ -1,0 +1,49 @@
+{
+  "name": "youtube-data-scraper",
+  "version": "1.0.0",
+  "description": "Fetch YouTube data without API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "mocha test/test.js",
+    "lint": "eslint src/**/*.ts",
+    "prebuild": "npm run lint",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekawatani/youtube-data-scraper.git"
+  },
+  "author": "ekawatani",
+  "license": "ISC",
+  "dependencies": {
+    "@types/html-to-text": "^1.4.31",
+    "@types/jsdom": "^16.1.0",
+    "@types/lodash.isnumber": "^3.0.6",
+    "@types/lodash.isstring": "^4.0.6",
+    "@types/numeral": "0.0.26",
+    "@types/request-promise-native": "^1.0.17",
+    "html-to-text": "^5.1.1",
+    "iso8601-duration": "^1.2.0",
+    "jsdom": "^16.2.0",
+    "lodash.isnumber": "^3.0.3",
+    "lodash.isstring": "^4.0.1",
+    "numeral": "^2.0.6",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.8",
+    "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
+    "eslint": "^6.8.0",
+    "mocha": "^7.0.1"
+  },
+  "keywords": [
+    "youtube",
+    "video",
+    "channel",
+    "fetch",
+    "scraper"
+  ]
+}

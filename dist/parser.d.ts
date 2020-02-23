@@ -1,0 +1,23 @@
+declare const parser: {
+    channelId: (body: HTMLElement) => string | null | undefined;
+    thumbnailUrl: (body: HTMLElement) => string | null | undefined;
+    embedUrl: (body: HTMLElement) => string | null | undefined;
+    isLiveBroadCast: (body: HTMLElement) => string | null | undefined;
+    broadcastStartDate: (body: HTMLElement) => string | null | undefined;
+    broadcastEndDate: (body: HTMLElement) => string | null | undefined;
+    unlisted: (body: HTMLElement) => string | null | undefined;
+    isFamilyFriendly: (body: HTMLElement) => string | null | undefined;
+    title: (body: HTMLElement) => string | null | undefined;
+    description: (body: HTMLElement) => string | null | undefined;
+    duration: (body: HTMLElement) => string | null | undefined;
+    publishedAt: (body: HTMLElement) => string | null | undefined;
+    category: (body: HTMLElement) => string | null | undefined;
+    gameTitle: (body: HTMLElement) => string | null | undefined;
+    viewCount: (body: HTMLElement) => string | null | undefined;
+    likeCount: (body: HTMLElement) => string | null | undefined;
+    dislikeCount: (body: HTMLElement) => string | null | undefined;
+    sessionToken: (body: HTMLElement) => string | undefined;
+    commentsToken: (body: HTMLElement) => string | undefined;
+    commentsCount: (response: string) => string | undefined;
+};
+export default parser;
