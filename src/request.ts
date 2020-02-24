@@ -14,10 +14,7 @@ const request = async (url: string, options: RequestOptions): Promise<string> =>
     const response = await got(url, {
       method: options.method,
       cookieJar: options.cookieJar,
-      headers: {
-        'Accept-Language': 'en-US',
-        ...options.headers,
-      },
+      headers: options.headers,
       searchParams: options.queries,
       form: options.formData,
     });

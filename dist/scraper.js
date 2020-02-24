@@ -60,7 +60,7 @@ exports.getVideo = function (id, options) { return __awaiter(void 0, void 0, voi
                             v: id,
                         },
                         headers: {
-                            'Accept-Language': (_d = options) === null || _d === void 0 ? void 0 : _d.language,
+                            'Accept-Language': ((_d = options) === null || _d === void 0 ? void 0 : _d.language) || 'en-US',
                             'Connection': 'keep-alive',
                             'Cache-Control': 'max-age=0',
                         },

@@ -44,7 +44,7 @@ export const getVideo = async (id: string, options?: GetVideoOptions): Promise<Y
       v: id,
     },
     headers: {
-      'Accept-Language': options?.language,
+      'Accept-Language': options?.language || 'en-US',
       'Connection': 'keep-alive',
       'Cache-Control': 'max-age=0',
     },
