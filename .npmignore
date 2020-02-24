@@ -1,2 +1,6 @@
 src
-tsgonfig.json
+test
+.eslintignore
+.eslintrc.js
+.gitignore
+tsconfig.json

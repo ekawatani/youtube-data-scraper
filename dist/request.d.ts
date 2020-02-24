@@ -9,5 +9,5 @@ interface RequestOptions {
     };
     queries?: Record<string, string>;
 }
-declare const request: <T>(url: string, options: RequestOptions) => Promise<string>;
+declare const request: (url: string, options: RequestOptions) => Promise<string>;
 export default request;
