@@ -19,7 +19,7 @@ export interface YouTubeVideoData {
     viewCount: number;
     likeCount: number;
     dislikeCount: number;
-    commentCount: number;
+    commentCount?: number;
 }
 interface GetVideoOptions {
     language?: string;

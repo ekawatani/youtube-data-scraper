@@ -23,11 +23,10 @@ export interface YouTubeVideoData {
   publishedAt: string;
   category: string;
   gameTitle?: string;
-  // tags: string[];
   viewCount: number;
   likeCount: number;
   dislikeCount: number;
-  commentCount: number;
+  commentCount?: number;
 }
 
 interface GetVideoOptions {
@@ -53,34 +52,40 @@ export const getVideo = async (id: string, options?: GetVideoOptions): Promise<Y
 
   const body = new JSDOM(pageContent).window.document.body;
 
-  const commentData = await request(commentServiceUrl, {
-    method: 'POST',
-    cookieJar,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Cache-Control': 'no-cache',
-      'x-youtube-client-name': '1',
-      'x-youtube-client-version': '2.20190221',
-    },
-    queries: {
-      action_get_comments: '1', // eslint-disable-line
-      pbj: '1',
-      ctoken: createValue<string>('commentsToken', parser.commentsToken(body), _, isNonEmptyString),
-    },
-    formData: {
-      session_token: createValue<string>('sessionToken', parser.sessionToken(body), _, isNonEmptyString), // eslint-disable-line
-    },
-  });
+  // Videos that disable comments do not have comments token in the response.
+  const commentToken = createOptionalValue<string>('commentsToken', parser.commentsToken(body), _, isNonEmptyString);
+  const commentData = isNonEmptyString(commentToken)
+    ? await request(commentServiceUrl, {
+        method: 'POST',
+        cookieJar,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Cache-Control': 'no-cache',
+          'x-youtube-client-name': '1',
+          'x-youtube-client-version': '2.20190221',
+        },
+        queries: {
+          action_get_comments: '1', // eslint-disable-line
+          pbj: '1',
+          ctoken: commentToken,
+        },
+        formData: {
+          session_token: createValue<string>('sessionToken', parser.sessionToken(body), _, isNonEmptyString), // eslint-disable-line
+        },
+      })
+    : undefined;
 
   return {
     id,
     channelId: createValue<string>('channelId', parser.channelId(body), _, isNonEmptyString),
     thumbnailUrl: createValue<string>('thumbnailUrl', parser.thumbnailUrl(body), _, isNonEmptyString),
     embedUrl: createValue<string>('embedUrl', parser.thumbnailUrl(body), _, isNonEmptyString),
-    liveBroadcast: createOptionalValue<boolean>('isLiveBroadCast', parser.isLiveBroadCast(body), toBoolean) ? {
-      startDate: createValue<string>('broadcastStartDate', parser.broadcastStartDate(body), _, isNonEmptyString),
-      endDate: createValue<string>('broadcastEndDate', parser.broadcastStartDate(body), _, isNonEmptyString),
-    } : undefined,
+    liveBroadcast: createOptionalValue<boolean>('isLiveBroadCast', parser.isLiveBroadCast(body), toBoolean)
+      ? {
+          startDate: createValue<string>('broadcastStartDate', parser.broadcastStartDate(body), _, isNonEmptyString),
+          endDate: createValue<string>('broadcastEndDate', parser.broadcastStartDate(body), _, isNonEmptyString),
+        }
+      : undefined,
     unlisted: createValue<boolean>('unlisted', parser.unlisted(body), toBoolean),
     isFamilyFriendly: createValue<boolean>('isFamilyFriendly', parser.isFamilyFriendly(body), toBoolean),
     title: createValue<string>('title', parser.title(body), _, isNonEmptyString),
@@ -92,6 +97,8 @@ export const getVideo = async (id: string, options?: GetVideoOptions): Promise<Y
     viewCount: createValue<number>('viewCount', parser.viewCount(body), toNumber),
     likeCount: createValue<number>('likeCount', parser.likeCount(body), toNumber),
     dislikeCount: createValue<number>('dislikeCount', parser.dislikeCount(body), toNumber),
-    commentCount: createValue<number>('commentCount', parser.commentsCount(commentData), toNumber),
+    commentCount: commentData === undefined
+      ? undefined
+      : createOptionalValue<number>('commentCount', parser.commentsCount(commentData), toNumber),
   };
 };

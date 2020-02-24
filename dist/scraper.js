@@ -47,12 +47,12 @@ var value_1 = require("./value");
 var urls_1 = require("./urls");
 var utils_1 = require("./utils");
 exports.getVideo = function (id, options) { return __awaiter(void 0, void 0, void 0, function () {
-    var cookieJar, pageContent, body, commentData;
-    var _a, _b, _c;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
+    var cookieJar, pageContent, body, commentToken, commentData, _a;
+    var _b, _c, _d;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
             case 0:
-                cookieJar = (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.cookieJar, (_b !== null && _b !== void 0 ? _b : new tough_cookie_1.CookieJar()));
+                cookieJar = (_c = (_b = options) === null || _b === void 0 ? void 0 : _b.cookieJar, (_c !== null && _c !== void 0 ? _c : new tough_cookie_1.CookieJar()));
                 return [4 /*yield*/, request_1.default(urls_1.videoUrl, {
                         method: 'GET',
                         cookieJar: cookieJar,
@@ -60,14 +60,16 @@ exports.getVideo = function (id, options) { return __awaiter(void 0, void 0, voi
                             v: id,
                         },
                         headers: {
-                            'Accept-Language': (_c = options) === null || _c === void 0 ? void 0 : _c.language,
+                            'Accept-Language': (_d = options) === null || _d === void 0 ? void 0 : _d.language,
                             'Connection': 'keep-alive',
                             'Cache-Control': 'max-age=0',
                         },
                     })];
             case 1:
-                pageContent = _d.sent();
+                pageContent = _e.sent();
                 body = new jsdom_1.JSDOM(pageContent).window.document.body;
+                commentToken = value_1.createOptionalValue('commentsToken', parser_1.default.commentsToken(body), utils_1.identity, utils_1.isNonEmptyString);
+                if (!utils_1.isNonEmptyString(commentToken)) return [3 /*break*/, 3];
                 return [4 /*yield*/, request_1.default(urls_1.commentServiceUrl, {
                         method: 'POST',
                         cookieJar: cookieJar,
@@ -80,23 +82,31 @@ exports.getVideo = function (id, options) { return __awaiter(void 0, void 0, voi
                         queries: {
                             action_get_comments: '1',
                             pbj: '1',
-                            ctoken: value_1.createValue('commentsToken', parser_1.default.commentsToken(body), utils_1.identity, utils_1.isNonEmptyString),
+                            ctoken: commentToken,
                         },
                         formData: {
                             session_token: value_1.createValue('sessionToken', parser_1.default.sessionToken(body), utils_1.identity, utils_1.isNonEmptyString),
                         },
                     })];
             case 2:
-                commentData = _d.sent();
+                _a = _e.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                _a = undefined;
+                _e.label = 4;
+            case 4:
+                commentData = _a;
                 return [2 /*return*/, {
                         id: id,
                         channelId: value_1.createValue('channelId', parser_1.default.channelId(body), utils_1.identity, utils_1.isNonEmptyString),
                         thumbnailUrl: value_1.createValue('thumbnailUrl', parser_1.default.thumbnailUrl(body), utils_1.identity, utils_1.isNonEmptyString),
                         embedUrl: value_1.createValue('embedUrl', parser_1.default.thumbnailUrl(body), utils_1.identity, utils_1.isNonEmptyString),
-                        liveBroadcast: value_1.createOptionalValue('isLiveBroadCast', parser_1.default.isLiveBroadCast(body), utils_1.toBoolean) ? {
-                            startDate: value_1.createValue('broadcastStartDate', parser_1.default.broadcastStartDate(body), utils_1.identity, utils_1.isNonEmptyString),
-                            endDate: value_1.createValue('broadcastEndDate', parser_1.default.broadcastStartDate(body), utils_1.identity, utils_1.isNonEmptyString),
-                        } : undefined,
+                        liveBroadcast: value_1.createOptionalValue('isLiveBroadCast', parser_1.default.isLiveBroadCast(body), utils_1.toBoolean)
+                            ? {
+                                startDate: value_1.createValue('broadcastStartDate', parser_1.default.broadcastStartDate(body), utils_1.identity, utils_1.isNonEmptyString),
+                                endDate: value_1.createValue('broadcastEndDate', parser_1.default.broadcastStartDate(body), utils_1.identity, utils_1.isNonEmptyString),
+                            }
+                            : undefined,
                         unlisted: value_1.createValue('unlisted', parser_1.default.unlisted(body), utils_1.toBoolean),
                         isFamilyFriendly: value_1.createValue('isFamilyFriendly', parser_1.default.isFamilyFriendly(body), utils_1.toBoolean),
                         title: value_1.createValue('title', parser_1.default.title(body), utils_1.identity, utils_1.isNonEmptyString),
@@ -108,7 +118,9 @@ exports.getVideo = function (id, options) { return __awaiter(void 0, void 0, voi
                         viewCount: value_1.createValue('viewCount', parser_1.default.viewCount(body), utils_1.toNumber),
                         likeCount: value_1.createValue('likeCount', parser_1.default.likeCount(body), utils_1.toNumber),
                         dislikeCount: value_1.createValue('dislikeCount', parser_1.default.dislikeCount(body), utils_1.toNumber),
-                        commentCount: value_1.createValue('commentCount', parser_1.default.commentsCount(commentData), utils_1.toNumber),
+                        commentCount: commentData === undefined
+                            ? undefined
+                            : value_1.createOptionalValue('commentCount', parser_1.default.commentsCount(commentData), utils_1.toNumber),
                     }];
         }
     });
