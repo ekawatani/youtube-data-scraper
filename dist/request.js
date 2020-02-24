@@ -50,26 +50,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var request_promise_native_1 = __importDefault(require("request-promise-native"));
-var request = function (options) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_1;
+var got_1 = __importDefault(require("got"));
+var request = function (url, options) { return __awaiter(void 0, void 0, void 0, function () {
+    var response, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, request_promise_native_1.default({
-                        uri: options.url,
+                return [4 /*yield*/, got_1.default(url, {
                         method: options.method,
-                        jar: options.cookieJar,
+                        cookieJar: options.cookieJar,
                         headers: __assign({ 'Accept-Language': 'en-US' }, options.headers),
-                        qs: options.queries,
+                        searchParams: options.queries,
                         form: options.formData,
                     })];
-            case 1: return [2 /*return*/, _a.sent()];
+            case 1:
+                response = _a.sent();
+                return [2 /*return*/, response.body];
             case 2:
                 e_1 = _a.sent();
                 if (e_1 instanceof Error) {
-                    e_1.message = options.method + " request failed at " + options.url + " with options " + JSON.stringify(options) + "\n" + e_1.message;
+                    e_1.message = options.method + " request failed at " + url + " with options " + JSON.stringify(options) + "\n" + e_1.message;
                 }
                 throw e_1;
             case 3: return [2 /*return*/];

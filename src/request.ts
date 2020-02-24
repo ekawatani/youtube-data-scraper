@@ -1,8 +1,7 @@
-import { CookieJar, Headers } from 'request';
-import { default as rq }  from 'request-promise-native';
+import got, { Headers } from 'got';
+import { CookieJar } from 'tough-cookie';
 
 interface RequestOptions {
-  url: string;
   method: 'GET' | 'POST';
   cookieJar: CookieJar;
   headers?: Headers;
@@ -10,22 +9,23 @@ interface RequestOptions {
   queries?: Record<string, string>;
 }
 
-const request = async <T>(options: RequestOptions): Promise<string> => {
+const request = async (url: string, options: RequestOptions): Promise<string> => {
   try {
-    return await rq({
-      uri: options.url,
+    const response = await got(url, {
       method: options.method,
-      jar: options.cookieJar,
+      cookieJar: options.cookieJar,
       headers: {
         'Accept-Language': 'en-US',
         ...options.headers,
       },
-      qs: options.queries,
+      searchParams: options.queries,
       form: options.formData,
     });
+
+    return response.body;
   } catch (e) {
     if (e instanceof Error) {
-      e.message = `${options.method} request failed at ${options.url} with options ${JSON.stringify(options)}\n${e.message}`;
+      e.message = `${options.method} request failed at ${url} with options ${JSON.stringify(options)}\n${e.message}`;
     }
 
     throw e;

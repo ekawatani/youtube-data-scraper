@@ -1,5 +1,4 @@
-import { CookieJar } from 'request';
-import { default as rq } from 'request-promise-native';
+import { CookieJar } from 'tough-cookie';
 import { JSDOM } from 'jsdom';
 import request from './request';
 import parser from './parser';
@@ -37,10 +36,9 @@ interface GetVideoOptions {
 }
 
 export const getVideo = async (id: string, options?: GetVideoOptions): Promise<YouTubeVideoData> => {
-  const cookieJar = options?.cookieJar ?? rq.jar();
+  const cookieJar = options?.cookieJar ?? new CookieJar();
 
-  const pageContent = await request({
-    url: videoUrl,
+  const pageContent = await request(videoUrl, {
     method: 'GET',
     cookieJar,
     queries: {
@@ -55,8 +53,7 @@ export const getVideo = async (id: string, options?: GetVideoOptions): Promise<Y
 
   const body = new JSDOM(pageContent).window.document.body;
 
-  const commentData = await request({
-    url: commentServiceUrl,
+  const commentData = await request(commentServiceUrl, {
     method: 'POST',
     cookieJar,
     headers: {

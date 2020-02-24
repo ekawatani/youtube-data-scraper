@@ -1,4 +1,4 @@
-import { CookieJar } from 'request';
+import { CookieJar } from 'tough-cookie';
 export interface YouTubeVideoData {
     id: string;
     channelId: string;

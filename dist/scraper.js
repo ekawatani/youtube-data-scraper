@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var request_promise_native_1 = __importDefault(require("request-promise-native"));
+var tough_cookie_1 = require("tough-cookie");
 var jsdom_1 = require("jsdom");
 var request_1 = __importDefault(require("./request"));
 var parser_1 = __importDefault(require("./parser"));
@@ -52,9 +52,8 @@ exports.getVideo = function (id, options) { return __awaiter(void 0, void 0, voi
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
-                cookieJar = (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.cookieJar, (_b !== null && _b !== void 0 ? _b : request_promise_native_1.default.jar()));
-                return [4 /*yield*/, request_1.default({
-                        url: urls_1.videoUrl,
+                cookieJar = (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.cookieJar, (_b !== null && _b !== void 0 ? _b : new tough_cookie_1.CookieJar()));
+                return [4 /*yield*/, request_1.default(urls_1.videoUrl, {
                         method: 'GET',
                         cookieJar: cookieJar,
                         queries: {
@@ -69,8 +68,7 @@ exports.getVideo = function (id, options) { return __awaiter(void 0, void 0, voi
             case 1:
                 pageContent = _d.sent();
                 body = new jsdom_1.JSDOM(pageContent).window.document.body;
-                return [4 /*yield*/, request_1.default({
-                        url: urls_1.commentServiceUrl,
+                return [4 /*yield*/, request_1.default(urls_1.commentServiceUrl, {
                         method: 'POST',
                         cookieJar: cookieJar,
                         headers: {

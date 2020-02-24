@@ -25,7 +25,7 @@ var parser = {
         if (descriptionHtml === undefined) {
             return undefined;
         }
-        // This is used because using textContent removes line breaks.
+        // This is used because using textContent removes line breaks, and YouTube also truncates long URLs.
         return html_to_text_1.default.fromString(descriptionHtml, {
             wordwrap: false,
             ignoreImage: true

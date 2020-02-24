@@ -1,6 +1,6 @@
-import { CookieJar, Headers } from 'request';
+import { Headers } from 'got';
+import { CookieJar } from 'tough-cookie';
 interface RequestOptions {
-    url: string;
     method: 'GET' | 'POST';
     cookieJar: CookieJar;
     headers?: Headers;
@@ -9,5 +9,5 @@ interface RequestOptions {
     };
     queries?: Record<string, string>;
 }
-declare const request: <T>(options: RequestOptions) => Promise<string>;
+declare const request: <T>(url: string, options: RequestOptions) => Promise<string>;
 export default request;

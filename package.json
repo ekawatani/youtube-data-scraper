@@ -22,15 +22,14 @@
     "@types/lodash.isnumber": "^3.0.6",
     "@types/lodash.isstring": "^4.0.6",
     "@types/numeral": "0.0.26",
-    "@types/request-promise-native": "^1.0.17",
+    "got": "^10.6.0",
     "html-to-text": "^5.1.1",
     "iso8601-duration": "^1.2.0",
     "jsdom": "^16.2.0",
     "lodash.isnumber": "^3.0.3",
     "lodash.isstring": "^4.0.1",
     "numeral": "^2.0.6",
-    "request": "^2.88.2",
-    "request-promise-native": "^1.0.8",
+    "tough-cookie": "^3.0.1",
     "typescript": "^3.7.5"
   },
   "devDependencies": {
