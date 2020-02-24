@@ -99,6 +99,6 @@ export const getVideo = async (id: string, options?: GetVideoOptions): Promise<Y
     dislikeCount: createValue<number>('dislikeCount', parser.dislikeCount(body), toNumber),
     commentCount: commentData === undefined
       ? undefined
-      : createOptionalValue<number>('commentCount', parser.commentsCount(commentData), toNumber),
+      : createValue<number>('commentCount', parser.commentsCount(commentData), toNumber),
   };
 };
