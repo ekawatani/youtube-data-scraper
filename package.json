@@ -22,7 +22,7 @@
     "@types/lodash.isnumber": "^3.0.6",
     "@types/lodash.isstring": "^4.0.6",
     "@types/numeral": "0.0.26",
-    "got": "^10.6.0",
+    "got": "^12.5.3",
     "html-to-text": "^5.1.1",
     "iso8601-duration": "^1.2.0",
     "jsdom": "^16.2.0",
